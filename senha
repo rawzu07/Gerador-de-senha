@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas Seguras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .conteudo {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .conteudo-titulo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .conteudo-titulo img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+        .titulo-principal {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .titulo-secundario {
+            color: #666;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .conteudo-senha {
+            margin-bottom: 30px;
+        }
+
+        .conteudo-senha label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .senha-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #campo-senha {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-family: monospace;
+        }
+
+        #campo-senha:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-copiar {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-copiar:hover {
+            background: #5a67d8;
+        }
+
+        .parametro {
+            margin-top: 20px;
+        }
+
+        .parametro-titulo {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .parametro-coluna__senha {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .parametro-senha {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .parametro-senha__titulo {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .controle-caracteres {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #tamanho-senha {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        #valor-tamanho {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+            min-width: 40px;
+        }
+
+        .checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .forca-senha {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .barra-forca {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .barra-forca-preenchida {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background 0.3s;
+            border-radius: 4px;
+        }
+
+        .texto-forca {
+            font-weight: bold;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .btn-gerar {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .btn-gerar:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-gerar:active {
+            transform: translateY(0);
+        }
+
+        .mensagem-copiado {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .conteudo {
+                padding: 20px;
+            }
+            
+            .checkboxes {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="conteudo">
+        <div class="conteudo-titulo">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9v4c0 3.87 3.13 7 7 7s7-3.13 7-7V9c0-3.87-3.13-7-7-7z" fill="#667eea"/>
+                <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="white"/>
+                <rect x="10" y="7" width="4" height="6" rx="1" fill="white"/>
+            </svg>
+            <h2 class="titulo-principal">Gerador de senhas</h2>
+            <h3 class="titulo-secundario">Gere instantaneamente uma senha aleatória e segura</h3>
+        </div>
+        
+        <div class="conteudo-senha">
+            <label for="senha">Senha gerada</label>
+            <div class="senha-wrapper">
+                <input name="senha" type="text" id="campo-senha" readonly>
+                <button class="btn-copiar" id="btn-copiar">Copiar</button>
+            </div>
+        </div>
+        
+        <div class="parametro">
+            <h3 class="parametro-titulo">Personalize sua senha</h3>
+            <div class="parametro-coluna__senha">
+                <!-- Número de caracteres -->
+                <div class="parametro-senha">
+                    <h4 class="parametro-senha__titulo">Número de caracteres</h4>
+                    <div class="controle-caracteres">
+                        <input type="range" id="tamanho-senha" min="6" max="32" value="12">
+                        <span id="valor-tamanho">12</span>
+                    </div>
+                </div>
+                
+                <!-- Características da senha -->
+                <div class="parametro-senha">
+                    <h4 class="parametro-senha__titulo">Características da senha</h4>
+                    <div class="checkboxes">
+                        <label>
+                            <input type="checkbox" id="incluir-maiusculas" checked>
+                            Letras maiúsculas (A-Z)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="incluir-minusculas" checked>
+                            Letras minúsculas (a-z)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="incluir-numeros" checked>
+                            Números (0-9)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="incluir-simbolos">
+                            Símbolos (!@#$%^&*)
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Força da senha -->
+                <div class="parametro-senha">
+                    <h4 class="parametro-senha__titulo">Força da senha</h4>
+                    <div class="forca-senha">
+                        <div class="barra-forca">
+                            <div class="barra-forca-preenchida" id="barra-forca"></div>
+                        </div>
+                        <span class="texto-forca" id="texto-forca">Fraca</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn-gerar" id="btn-gerar">🔄 Gerar nova senha</button>
+    </section>
+
+    <script>
+        // Elementos DOM
+        const campoSenha = document.getElementById('campo-senha');
+        const btnGerar = document.getElementById('btn-gerar');
+        const btnCopiar = document.getElementById('btn-copiar');
+        const tamanhoSlider = document.getElementById('tamanho-senha');
+        const valorTamanho = document.getElementById('valor-tamanho');
+        const incluirMaiusculas = document.getElementById('incluir-maiusculas');
+        const incluirMinusculas = document.getElementById('incluir-minusculas');
+        const incluirNumeros = document.getElementById('incluir-numeros');
+        const incluirSimbolos = document.getElementById('incluir-simbolos');
+        const barraForca = document.getElementById('barra-forca');
+        const textoForca = document.getElementById('texto-forca');
+
+        // Conjuntos de caracteres
+        const caracteres = {
+            maiusculas: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            minusculas: 'abcdefghijklmnopqrstuvwxyz',
+            numeros: '0123456789',
+            simbolos: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+        };
+
+        // Atualizar valor do slider em tempo real
+        tamanhoSlider.addEventListener('input', () => {
+            valorTamanho.textContent = tamanhoSlider.value;
+            gerarSenha();
+        });
+
+        // Adicionar listeners para os checkboxes
+        [incluirMaiusculas, incluirMinusculas, incluirNumeros, incluirSimbolos].forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                validarCheckboxes();
+                gerarSenha();
+            });
+        });
+
+        // Validar se pelo menos um checkbox está marcado
+        function validarCheckboxes() {
+            const checkboxes = [incluirMaiusculas, incluirMinusculas, incluirNumeros, incluirSimbolos];
+            const peloMenosUmMarcado = checkboxes.some(checkbox => checkbox.checked);
+            
+            if (!peloMenosUmMarcado) {
+                incluirMinusculas.checked = true;
+                mostrarMensagem('Selecione pelo menos uma opção!', 'error');
+            }
+        }
+
+        // Gerar senha aleatória
+        function gerarSenha() {
+            let caracteresDisponiveis = '';
+            let senha = '';
+            const tamanho = parseInt(tamanhoSlider.value);
+
+            // Construir string de caracteres disponíveis
+            if (incluirMaiusculas.checked) caracteresDisponiveis += caracteres.maiusculas;
+            if (incluirMinusculas.checked) caracteresDisponiveis += caracteres.minusculas;
+            if (incluirNumeros.checked) caracteresDisponiveis += caracteres.numeros;
+            if (incluirSimbolos.checked) caracteresDisponiveis += caracteres.simbolos;
+
+            // Garantir que cada tipo selecionado apareça pelo menos uma vez
+            const tiposSelecionados = [];
+            if (incluirMaiusculas.checked) tiposSelecionados.push(caracteres.maiusculas);
+            if (incluirMinusculas.checked) tiposSelecionados.push(caracteres.minusculas);
+            if (incluirNumeros.checked) tiposSelecionados.push(caracteres.numeros);
+            if (incluirSimbolos.checked) tiposSelecionados.push(caracteres.simbolos);
+
+            // Adicionar um caractere de cada tipo selecionado
+            for (const tipo of tiposSelecionados) {
+                const indiceAleatorio = Math.floor(Math.random() * tipo.length);
+                senha += tipo[indiceAleatorio];
+            }
+
+            // Completar o resto da senha
+            for (let i = senha.length; i < tamanho; i++) {
+                const indiceAleatorio = Math.floor(Math.random() * caracteresDisponiveis.length);
+                senha += caracteresDisponiveis[indiceAleatorio];
+            }
+
+            // Embaralhar a senha para não ficar previsível
+            senha = embaralharString(senha);
+            
+            campoSenha.value = senha;
+            calcularForcaSenha(senha);
+        }
+
+        // Embaralhar string (algoritmo Fisher-Yates)
+        function embaralharString(str) {
+            const array = str.split('');
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array.join('');
+        }
+
+        // Calcular força da senha
+        function calcularForcaSenha(senha) {
+            let forca = 0;
+            
+            // Critérios de força
+            if (senha.length >= 12) forca += 25;
+            else if (senha.length >= 8) forca += 15;
+            else forca += 5;
+            
+            if (/[A-Z]/.test(senha)) forca += 25;
+            if (/[a-z]/.test(senha)) forca += 25;
+            if (/[0-9]/.test(senha)) forca += 25;
+            if (/[^A-Za-z0-9]/.test(senha)) forca += 35;
+            
+            // Penalizar senhas com padrões repetidos
+            if (/(.)\1{2,}/.test(senha)) forca -= 20;
+            
+            // Normalizar para 0-100
+            forca = Math.min(100, Math.max(0, forca));
+            
+            // Atualizar barra de força
+            barraForca.style.width = `${forca}%`;
+            
+            // Definir cor e texto baseado na força
+            let cor, texto;
+            if (forca < 40) {
+                cor = '#e53e3e';
+                texto = 'Fraca';
+            } else if (forca < 70) {
+                cor = '#ed8936';
+                texto = 'Média';
+            } else {
+                cor = '#48bb78';
+                texto = 'Forte';
+            }
+            
+            barraForca.style.background = cor;
+            textoForca.textContent = texto;
+            textoForca.style.color = cor;
+        }
+
+        // Copiar senha para área de transferência
+        async function copiarSenha() {
+            const senha = campoSenha.value;
+            
+            if (!senha) {
+                mostrarMensagem('Nenhuma senha para copiar!', 'error');
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(senha);
+                mostrarMensagem('✅ Senha copiada com sucesso!', 'success');
+            } catch (err) {
+                // Fallback para navegadores antigos
+                campoSenha.select();
+                document.execCommand('copy');
+                mostrarMensagem('✅ Senha copiada com sucesso!', 'success');
+            }
+        }
+
+        // Mostrar mensagem temporária
+        function mostrarMensagem(mensagem, tipo = 'success') {
+            const mensagemDiv = document.createElement('div');
+            mensagemDiv.className = 'mensagem-copiado';
+            mensagemDiv.style.background = tipo === 'success' ? '#48bb78' : '#e53e3e';
+            mensagemDiv.textContent = mensagem;
+            document.body.appendChild(mensagemDiv);
+            
+            setTimeout(() => {
+                mensagemDiv.remove();
+            }, 2000);
+        }
+
+        // Eventos
+        btnGerar.addEventListener('click', gerarSenha);
+        btnCopiar.addEventListener('click', copiarSenha);
+
+        // Gerar senha inicial ao carregar a página
+        gerarSenha();
+    </script>
+</body>
+
+</html>
