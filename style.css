@@ -1,0 +1,484 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap');
+
+:root {
+    --branco: white;
+    --cor-de-fundo: #00162E;
+    --fundo-senha: #00244D;
+    --fundo-texto: #001E40;
+    --borda: #0075FF;
+    --borda-hover: #0099FF;
+    --roboto: 'Roboto', sans-serif;
+    --roboto-mono: 'Roboto Mono', monospace;
+    --forca-fraca: #FF4444;
+    --forca-media: #FFA500;
+    --forca-forte: #00FF88;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: 400;
+}
+
+body {
+    color: var(--branco);
+    background-color: var(--cor-de-fundo);
+    font-family: var(--roboto);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.conteudo {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Títulos */
+.conteudo-titulo {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.conteudo-titulo img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(0, 117, 255, 0.5));
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.titulo-principal {
+    font-family: var(--roboto-mono);
+    font-size: 32px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--branco) 0%, var(--borda) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.titulo-secundario {
+    font-size: 24px;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* Área da senha */
+.conteudo-senha {
+    margin-top: 40px;
+    background: var(--fundo-senha);
+    padding: 24px;
+    border-bottom: 6px solid var(--borda);
+    border-radius: 16px 16px 0 0;
+    transition: all 0.3s ease;
+}
+
+.conteudo-senha:hover {
+    border-bottom-width: 8px;
+}
+
+.conteudo-senha label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.senha-wrapper {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#campo-senha {
+    background-color: var(--fundo-senha);
+    border: 2px solid transparent;
+    color: var(--branco);
+    font-family: var(--roboto-mono);
+    font-size: 32px;
+    padding: 15px;
+    flex: 1;
+    min-width: 200px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+#campo-senha:focus {
+    outline: none;
+    border-color: var(--borda);
+    background-color: rgba(0, 117, 255, 0.1);
+}
+
+.btn-copiar {
+    background: linear-gradient(135deg, var(--borda) 0%, var(--borda-hover) 100%);
+    color: var(--branco);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--roboto);
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-copiar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 117, 255, 0.3);
+}
+
+.btn-copiar:active {
+    transform: translateY(0);
+}
+
+/* Parâmetros */
+.parametro {
+    background-color: var(--fundo-texto);
+    border: 2px solid var(--borda);
+    margin-top: 32px;
+    padding: 32px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.parametro:hover {
+    box-shadow: 0 0 20px rgba(0, 117, 255, 0.2);
+}
+
+.parametro-titulo {
+    font-family: var(--roboto-mono);
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.parametro-coluna__senha {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.parametro-senha {
+    padding: 20px;
+    background: rgba(0, 36, 77, 0.5);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.parametro-senha:hover {
+    background: rgba(0, 36, 77, 0.8);
+    transform: translateX(5px);
+}
+
+.parametro-senha__titulo {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--borda);
+    font-weight: 500;
+}
+
+/* Controle de caracteres (slider) */
+.controle-caracteres {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#tamanho-senha {
+    flex: 1;
+    min-width: 200px;
+    height: 6px;
+    -webkit-appearance: none;
+    background: var(--fundo-senha);
+    border-radius: 3px;
+    outline: none;
+}
+
+#tamanho-senha::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--borda);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#tamanho-senha::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: var(--borda-hover);
+}
+
+#valor-tamanho {
+    font-family: var(--roboto-mono);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--borda);
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Checkboxes */
+.checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.checkboxes label:hover {
+    background: rgba(0, 117, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.checkboxes input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--borda);
+}
+
+/* Força da senha */
+.forca-senha {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.barra-forca {
+    flex: 1;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.barra-forca-preenchida {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.barra-forca-preenchida::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.texto-forca {
+    font-weight: bold;
+    min-width: 80px;
+    text-align: right;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botão gerar */
+.btn-gerar {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--borda) 0%, var(--borda-hover) 100%);
+    color: var(--branco);
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--roboto);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-gerar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-gerar:hover::before {
+    left: 100%;
+}
+
+.btn-gerar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 117, 255, 0.3);
+}
+
+.btn-gerar:active {
+    transform: translateY(0);
+}
+
+/* Mensagem de copiado */
+.mensagem-copiado {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-family: var(--roboto);
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideInRight 0.3s ease-out;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsividade */
+@media screen and (min-width: 768px) {
+    .parametro-coluna__senha {
+        flex-direction: row;
+    }
+    
+    .parametro-senha {
+        flex: 1;
+    }
+    
+    .titulo-principal {
+        font-size: 48px;
+    }
+    
+    #campo-senha {
+        font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .conteudo {
+        padding: 10px;
+    }
+    
+    .parametro {
+        padding: 20px;
+    }
+    
+    .titulo-principal {
+        font-size: 28px;
+    }
+    
+    .titulo-secundario {
+        font-size: 18px;
+    }
+    
+    #campo-senha {
+        font-size: 20px;
+        padding: 10px;
+    }
+    
+    .btn-copiar {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .parametro-senha__titulo {
+        font-size: 18px;
+    }
+    
+    .checkboxes {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--fundo-texto);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--borda);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--borda-hover);
+}
+
+/* Seleção de texto */
+::selection {
+    background: var(--borda);
+    color: var(--branco);
+}
